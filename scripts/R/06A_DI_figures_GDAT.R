@@ -184,7 +184,7 @@ f1a1= ggplot(figPLR %>% filter(var=="PLR (%)"), aes(y=PLR, x=scenario)) + #TODO
     axis.text.y = element_text(color='black',hjust = 0.5),
     axis.line.y = element_line(color='black'),
     panel.background = element_rect(fill = "transparent") # bg of the panel
-    , plot.background = element_rect(fill = "transparent", color = NA) # bg of the plot
+    #, plot.background = element_rect(fill = "transparent", color = NA) # bg of the plot
     , panel.grid.major = element_blank() # get rid of major grid
     , panel.grid.minor = element_blank() # get rid of minor grid
     , strip.background = element_rect('white'),
@@ -217,7 +217,7 @@ dp=ggplot(PLR %>%filter(PLRkm_curdams>0), aes(x=log10(PLRkm_curdams), y=log10(PL
 # combine these things
 
 figure2=ggarrange(f1a1,dp, 
-                  labels = c("A ", "B"),
+                  labels = c("(a) ", "(b)"), hjust=-0.1,
                   font.label = list(size = 12),
                   ncol = 2, nrow = 1,
                   widths = c(1, 1.5))
@@ -245,12 +245,18 @@ f1b=ggplot(PLR %>%filter(PLRkm_curdams>0), aes(x=log10(PLRkm_curdams), y=log10(P
 
 # combine these things
 figure2=ggarrange(f1a1,f1b, 
-                  labels = c("A ", "B"),
+                  labels = c("(a) ", "(b)"), hjust=-0.1,
                   font.label = list(size = 12),
                   ncol = 2, nrow = 1,
                   widths = c(1, 1.5))
-ggsave(paste0(dir_figs,'paper/figure2.jpg'),figure2,
-       width = 150,height = 50,dpi = 1000,units = 'mm')
+
+if(mva_type=="TSuspsel_meansp_minbin"){
+  ggsave(paste0(dir_figs,'paper/Figure_2.png'),figure2,
+         width = 150,height = 50,dpi = 700,units = 'mm')}
+
+if(mva_type=="Meansp_minbin"){
+  ggsave(paste0(dir_figs,'paper/Figure_S11.png'),figure2,
+         width = 150,height = 50,dpi = 700,units = 'mm')}
 
 
 #########################################################################################################################################################################################
@@ -311,7 +317,7 @@ CIcomp_incl0log=ggplot(PLR_CI, aes(x= PLR_curdams, y=CI_current))+
         panel.grid.minor = element_blank()
         ) 
 
-ggsave(paste0(dir_figs,'paper/extra/CIcomparison.jpg'), CIcomp_incl0log,
+ggsave(paste0(dir_figs,'paper/extra/Figure_S15_CIcomparison.jpg'), CIcomp_incl0log,
        width = 89,height = 89,dpi = 1000,units = 'mm')
 
 
@@ -484,7 +490,7 @@ iucnfigperc=ggplot(tab_char, aes(x=LorUdams,y=PLR_curdams) ) +
     axis.line.y = element_line(color='black'),
     # axis.line.y.right = element_line(),
     panel.background = element_rect(fill = "transparent") # bg of the panel
-    , plot.background = element_rect(fill = "transparent", color = NA) # bg of the plot
+    #, plot.background = element_rect(fill = "transparent", color = NA) # bg of the plot
     , panel.grid.major = element_blank() # get rid of major grid
     , panel.grid.minor = element_blank() # get rid of minor grid
     # , legend.background = element_rect(fill = "transparent") # get rid of legend bg
@@ -539,7 +545,7 @@ iucnfigkm=ggplot(tab_char, aes(x=LorUdams,y=PLRkm_curdams) ) +
     axis.line.y = element_line(color='black'),
     # axis.line.y.right = element_line(),
     panel.background = element_rect(fill = "transparent") # bg of the panel
-    , plot.background = element_rect(fill = "transparent", color = NA) # bg of the plot
+    #, plot.background = element_rect(fill = "transparent", color = NA) # bg of the plot
     , panel.grid.major = element_blank() # get rid of major grid
     , panel.grid.minor = element_blank() # get rid of minor grid
     # , legend.background = element_rect(fill = "transparent") # get rid of legend bg
@@ -597,7 +603,7 @@ barplot= ggplot(bars, aes(fill=IUCNgroup, y=value, x=myres)) +
     axis.line.y = element_line(color='black'),
     # axis.line.y.right = element_line(),
     panel.background = element_rect(fill = "transparent") # bg of the panel
-    , plot.background = element_rect(fill = "transparent", color = NA) # bg of the plot
+    #, plot.background = element_rect(fill = "transparent", color = NA) # bg of the plot
     , panel.grid.major = element_blank() # get rid of major grid
     , panel.grid.minor = element_blank() # get rid of minor grid
     # , legend.background = element_rect(fill = "transparent") # get rid of legend bg
@@ -609,16 +615,16 @@ barplot= ggplot(bars, aes(fill=IUCNgroup, y=value, x=myres)) +
     strip.text = element_text(angle = 0, size = 10)
   )
 
-
 #plots IUCN dams threat only
-tp=ggarrange(barplot, labels = c("A"), 
-          ggarrange(iucnfigperc,iucnfigkm, labels = c("B","C"),ncol=2), 
-          nrow = 2)
-
+tp=ggarrange(barplot3, labels = c("(a)"), hjust=0, vjust=1.1,
+             ggarrange(iucnfigperc,iucnfigkm, labels = c("(b)","(c)"), hjust=0, 
+                       font.label = list(size = 12),
+                       ncol=2), 
+             font.label = list(size = 12),
+             nrow = 2)
 #threatplots
-ggsave(paste0(dir_figs,'paper/IUCNcomparison_incl0.jpg'),tp,
-       width = 150,height = 100,dpi = 1000,units = 'mm') #better visible except score labels
-
+ggsave(paste0(dir_figs,'paper/Figure_S14.png'),tp,
+       width = 150,height = 100,dpi = 700,units = 'mm')
 
 
 
@@ -635,6 +641,7 @@ morethanonefragment=nribs%>%filter(nrfrags>1)%>% pull(MAIN_BAS) # this is how ma
 length(morethanonefragment)
 SR_cur2 <- SR_cur %>% filter(MAIN_BAS %in% morethanonefragment)
 
+
 dp=ggplot(SR_cur2, aes(x=log10(ib_area), y=PAFcur) ) + 
   geom_bin2d(bins = 50) + #TODO
   scale_fill_continuous(type = "viridis",trans="log10") +
@@ -642,9 +649,17 @@ dp=ggplot(SR_cur2, aes(x=log10(ib_area), y=PAFcur) ) +
   xlab(expression('Fragment size (km²)')) + ylab(expression('PAF'["species"])) +
   scale_x_continuous(labels=c("1","100","10.000","1.000.000"), breaks=c(0,2,4,6)) +
   theme_bw() +
-  theme(text = element_text(size = 30))
+  theme(text = element_text(size = 10),
+        axis.text.x = element_text(color='black',vjust = 0),
+        axis.text.y = element_text(color='black',hjust = 0.5),
+        axis.line.y = element_line(color='black'),
+        legend.key.size = unit(5, 'mm'), #change legend key size
+        legend.key.height = unit(4, 'mm'), #change legend key height
+        legend.key.width = unit(3, 'mm'), #change legend key width
+        legend.title = element_text(size=8), #change legend title font size
+        legend.text = element_text(size=6))
 
-ggsave(paste0(dir_figs,'paper/extra/PAF_vs_FragmentSize.jpg'),dp, width=12, height=7)
+ggsave(paste0(dir_figs,'paper/extra/Figure_S13_PAF_vs_FragmentSize.jpg'),dp, width=110, height=64,units = 'mm')
 
 #scatter plot
 dp=ggplot(SR_cur2, aes(x=log10(ib_area), y=PAFcur) ) + 

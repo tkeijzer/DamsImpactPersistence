@@ -101,22 +101,31 @@ for(v in vars[4]){
     geom_sf(data = world, fill = "grey90", lwd = NA) +
     geom_sf(data = tfig,  aes(fill=value), lwd=NA) + # filter out basins for which we have no species data (they will be grey)
     geom_sf(data = tab_sf %>% filter(!is.na(occ))%>% filter(frag_cur==F),  fill="grey50", lwd=NA) + # overlay of basins with species data but without dams
-    scale_fill_gradientn(name = "PAF", colours = cols, limits = c(0,0.5), breaks = seq(0,0.5,0.1),labels = c(0,10,20,30,40,">=50%"), na.value = "transparent", values=scales::rescale((0:50)^1.25))+
+    #scale_fill_continuous(type="viridis",trans=scales::pseudo_log_trans(base = 10), labels=c(0,0.01,0.1,0.25,0.50,1), breaks=c(0,0.01,0.1,0.25,0.50,1),na.value = "transparent")+
+    #scale_fill_manual(values=cols) +
+    scale_fill_gradientn(name = "PAF", colours = cols, limits = c(0,0.5), breaks = seq(0,0.5,0.1),labels = c(0,10,20,30,40,paste0("\u2265 50","%")), na.value = "transparent", values=scales::rescale((0:50)^1.25))+
+    #scale_fill_gradientn(name = "PAF", colours = cols,trans=scales::pseudo_log_trans(base = 10),breaks=mybreaks, labels=mybreaks,na.value = "transparent")+
+    #scale_fill_viridis_c(#trans = scales::pseudo_log_trans(sigma = 0.001),
+    #                     breaks = seq(0,0.05,0.01),
+    #                     labels = c(0:4,">=5"),
+    #                     limits = c(0,0.05),
+    #                     option = 'C',na.value = "transparent") +
     theme_minimal() +
     theme(text = element_text(size = 12),
           panel.grid.major = element_line(color=NA),
           axis.text = element_blank(),
           axis.title = element_blank(),
           legend.position = 'bottom',
-          legend.key.width = unit(6,'line'),
-          strip.background = element_rect('white'),
+          legend.key.width = unit(5.5,'line'),
+          plot.background = element_rect(fill = 'white', colour = 'white'),
           strip.background.x = element_blank(),
           strip.background.y = element_blank(),
           strip.text = element_text(angle = 0, vjust = -1, size = 12),
           legend.title = element_blank()
     )
-  ggsave(paste0(dir_figs,'paper/maps/figure3.jpg'),p,
-         width = 170,height = 110,dpi = 1000,units = 'mm')
+  
+  ggsave(paste0(dir_figs,'paper/maps/Figure_3.png'),p,
+         width = 160,height = 105,dpi = 700,units = 'mm')
 }
 
 
@@ -150,7 +159,7 @@ for(v in "Pextinct_spec"){ # do it separately to set limits on scales
           legend.title = element_blank()
     )
 }
-ggsave(paste0(dir_figs,'paper/maps/Pextinct_spec.jpg'),p1,dpi=1000)
+ggsave(paste0(dir_figs,'paper/maps/Figure_S3_Pextinct_spec.jpg'),p1,dpi=1000)
 
 
 

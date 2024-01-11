@@ -258,7 +258,7 @@ for(region in regs){
             legend.title = element_blank()
       )
     
-    ggsave(paste0(dir_figs,'paper/maps/Dams_',damsdata,'_size.jpg'),p2,
+    ggsave(paste0(dir_figs,'paper/maps/Figure_SI_Regions_Dams__',damsdata,'_size.png'),p2,
            dpi = 1000, width = 178, height=hfig,units = 'mm')
     
     ps= ggplot()+
@@ -385,8 +385,8 @@ for(region in regs){
       usplot=ggdraw(mainland) +
         draw_plot(alaska, width = 0.26, height = 0.26 * 10/6 * ratioAlaska, 
                   x = 0.06, y = 0.13)
-      ggsave(paste0(dir_figs,'paper/maps/NEW_Dams_',damsdata,'_size.jpg'),usplot,dpi = 1000, width = 178, height=hfig, units = 'mm' )
-      
+      ggsave(paste0(dir_figs,'paper/maps/Figure_SI_Regions_Dams_',damsdata,'_size.png'),usplot,dpi = 1000, width = 178, height=hfig, units = 'mm' )
+      # the SI figures are the ones in the BOTH (dams datasets) folder
       
       #just large dams
       mainland= ggplot()+

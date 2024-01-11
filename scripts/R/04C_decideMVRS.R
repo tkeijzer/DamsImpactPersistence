@@ -37,8 +37,13 @@ if(vulnerable = TRUE){iucncode_included = c("LC","NT","VU","EN","CR")}
 coastal_basins_filtered_out = TRUE
 
 #filter on species in basins? so exclude = TRUE
+if(mvrs_type=="TSuspsel_meansp_minbin"){
 TedescoSu_filter_species= TRUE #both tedesco and su (also non native and extinct)
+}
 
+if(mvrs_type=="Meansp_minbin"){
+  TedescoSu_filter_species= FALSE #both tedesco and su (also non native and extinct)
+}
 
 #breakpoint manually, check in line 190
 bp=6
@@ -47,13 +52,19 @@ bp=6
 
 
 # output files
-folder="TSuspsel_meansp_minbin/" # change the folder name with chosen settings
+folder=paste0(mvrs_type,"/") # change the folder name with chosen settings
 
 dir_("Dams_impact/figs")
 figdir=dir_("Dams_impact/figs/MVRSbodysize/")
 dir_(paste0(figdir,folder))
 
-bothplots = paste0(figdir,folder,"figure1.jpg")
+if(mvrs_type=="TSuspsel_meansp_minbin"){
+bothplots = paste0(figdir,folder,"Figure_1.png")
+}
+
+if(mvrs_type=="Meansp_minbin"){
+  bothplots = paste0(figdir,folder,"Figure_S10.png")
+}
 
 
 
@@ -214,7 +225,7 @@ sp_mb <- sp %>% group_by(binomial, MAIN_BAS) %>% summarise(SUM_AREA=sum(SUB_AREA
 sp1 <- sp_mb %>% group_by(binomial) %>% summarise(range=mean(SUM_AREA))
 
 
-sp1 <- left_join(sp1, traits %>% select(binomial,Length))
+sp1 <- left_join(sp1, traits %>% dplyr::select(binomial,Length))
 
 #number observations per species histogram, so in how many basins species occur
 cnt=table(sp_mb$binomial)
@@ -316,7 +327,7 @@ Aplot=
   xlab(expression('Log'[10]*' Body Size (cm)')) + ylab(expression('Log'[10]*' Range Size (km'^2* ')')) +
   theme_bw() +
   scale_x_continuous(breaks=c(0,1,2), minor_breaks=c(0.5,1.5,2.5)) +
-  annotate("text", x = 2, y = 0, hjust = 0.3, vjust = 0.8, label = bquote(atop(NA,atop(textstyle(n[~species]~"="~.(nrow(sp1))),textstyle(n[~main~basins]~"="~.(length(unique(sp$MAIN_BAS))))))), size=2.25 ) +
+  annotate("text", x = 2, y = 0, hjust = 0.4, vjust = 0.8, label = bquote(atop(NA,atop(textstyle(n[~species]~"="~.(nrow(sp1))),textstyle(n[~main~basins]~"="~.(length(unique(sp$MAIN_BAS))))))), size=2.25 ) +
   coord_cartesian( xlim=c(0,2.6), ylim=c(-1,6.5), clip = "off")+
   theme(text = element_text(size = 10))+
   theme(legend.key.size = unit(5, 'mm'), #change legend key size
@@ -345,11 +356,11 @@ Bplot=
 
 # put in A and B letters in figs
 library(ggpubr)
-Allplot=ggarrange(Aplot,Bplot,labels = c("A ", "B"),
+Allplot=ggarrange(Aplot,Bplot,labels = c("(a)", "(b)"), hjust=-0.3,
                   font.label = list(size = 12),
                   ncol=2,nrow=1, widths = c(1.25, 1))
 ggsave(bothplots,Allplot,
-       width = 140,height = 60,dpi = 1000,units = 'mm')
+       width = 140,height = 60,dpi = 700,units = 'mm')
 
 
 

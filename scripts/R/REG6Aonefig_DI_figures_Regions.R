@@ -145,7 +145,7 @@ stats <- tab %>%
 p1 <- ggplot(data = tab, aes(x = variable, y = value)) +
   geom_violin(scale='width',color = 'transparent',fill = 'Grey70',alpha = 0.8) +
   geom_boxplot(fill = 'white',width = 0.1, outlier.size = 0.5, outlier.shape = 1, outlier.alpha = 0.5, alpha=0.9) +
-  scale_y_continuous(trans=scales::pseudo_log_trans(base = 10), labels=scales::comma_format(accuracy=1), breaks=c(0,100,1000,10000,100000))+ # special trans to keep zeros
+  scale_y_continuous(trans=scales::pseudo_log_trans(base = 10), labels=scales::comma_format(accuracy=1), breaks=c(0,10,100,1000,10000,100000,1000000))+ # special trans to keep zeros
   facet_wrap('region') +
   xlab(' ') +
   ylab('PLR (km²)') +
@@ -168,7 +168,7 @@ p1 <- ggplot(data = tab, aes(x = variable, y = value)) +
     axis.line.y = element_line(color='black'),
     # axis.line.y.right = element_line(),
     panel.background = element_rect(fill = "transparent") # bg of the panel
-    , plot.background = element_rect(fill = "transparent", color = NA) # bg of the plot
+    #, plot.background = element_rect(fill = "transparent", color = NA) # bg of the plot
     , panel.grid.major = element_blank() # get rid of major grid
     , panel.grid.minor = element_blank() # get rid of minor grid
     # , legend.background = element_rect(fill = "transparent") # get rid of legend bg
@@ -267,7 +267,7 @@ p2 <- ggplot(data = tab, aes(x = variable, y = value)) +
     axis.line.y = element_line(color='black'),
     # axis.line.y.right = element_line(),
     panel.background = element_rect(fill = "transparent") # bg of the panel
-    , plot.background = element_rect(fill = "transparent", color = NA) # bg of the plot
+    #, plot.background = element_rect(fill = "transparent", color = NA) # bg of the plot
     , panel.grid.major = element_blank() # get rid of major grid
     , panel.grid.minor = element_blank() # get rid of minor grid
     # , legend.background = element_rect(fill = "transparent") # get rid of legend bg
@@ -282,12 +282,13 @@ p2
 
 library(ggpubr)
 allplots <- ggarrange(p2,p1,
-                      labels = c("A ", "B"),
+                      labels = c("(a) ", "(b)"),
                       font.label = list(size = 12),
                       ncol = 1, nrow = 2)
 
-ggsave(filename = "Dams_impact/figs/REGIONAL_compare_largesmalldams_perckm2.jpg",allplots,
-       width = 114,height = 116,units = 'mm',dpi = 1000)
+ggsave(filename = "Dams_impact/figs/Figure_4.png",allplots,
+       width = 100,height = 100,units = 'mm',dpi = 700)
+
 
 
 

@@ -230,23 +230,8 @@ for(region in regs){
     
     #next to each other except for USA
     if(region=="MEK"){
-    figure2=ggarrange(p2a,p2b, 
-                      labels = c("A ", "B"),
-                      #vjust=15,
-                      font.label = list(size = 12),
-                      ncol = 2, nrow = 1,
-                      #widths = c(1, 1.5),
-                      common.legend=TRUE,
-                      legend="bottom"
-                      )
-    dev.off()
-    ggsave(paste0(dir_figs,'paper/maps/REG_PAF_subbasins_combined.jpg'),figure2, height = 150, width = 178,
-           dpi = 1000,units = 'mm')
-    }
-    
-    if(region=="BRA"){
       figure2=ggarrange(p2a,p2b, 
-                        labels = c("A ", "B"),
+                        labels = c("(a) ", "(b)"),
                         #vjust=15,
                         font.label = list(size = 12),
                         ncol = 2, nrow = 1,
@@ -255,21 +240,36 @@ for(region in regs){
                         legend="bottom"
       )
       dev.off()
-      ggsave(paste0(dir_figs,'paper/maps/REG_PAF_subbasins_combined.jpg'),figure2, height = 120, width = 178,
+      ggsave(paste0(dir_figs,'paper/maps/Figure_S7.png'),figure2, height = 150, width = 178,
+             dpi = 1000,units = 'mm')
+    }
+    
+    if(region=="BRA"){
+      figure2=ggarrange(p2a,p2b, 
+                        labels = c("(a) ", "(b)"),
+                        #vjust=15,
+                        font.label = list(size = 12),
+                        ncol = 2, nrow = 1,
+                        #widths = c(1, 1.5),
+                        common.legend=TRUE,
+                        legend="bottom"
+      )
+      dev.off()
+      ggsave(paste0(dir_figs,'paper/maps/Figure_S5.png'),figure2, height = 120, width = 178,
              dpi = 1000,units = 'mm')
     }
     
     if(region=="USA"){
       figure2=ggarrange(usplot_a,usplot_b, 
-                        labels = c("A ", "B"),
+                        labels = c("(a) ", "(b)"),
                         font.label = list(size = 12),
-                        ncol = 1, nrow = 2#,
+                        ncol = 1, nrow = 2,
                         #widths = c(1, 1.5),
-                        #legend.grob=leg,
-                        #legend="bottom"
+                        legend.grob=leg,
+                        legend="bottom"
       )
       dev.off()
-      ggsave(paste0(dir_figs,'paper/maps/REG_PAF_subbasins_combined.jpg'),figure2, height = 200, width = 178,
+      ggsave(paste0(dir_figs,'paper/maps/Figure_S9.png'),figure2, height = 200, width = 178,
              dpi = 1000,units = 'mm')
     }
     

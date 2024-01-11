@@ -162,7 +162,7 @@ p2 <- ggplot() +
 
 library(ggpubr)
 figure2=ggarrange(p1,p2, 
-                  labels = c("A ", "B"),
+                  labels = c("(a) ", "(b)"),
                   font.label = list(size = 12),
                   ncol = 1, nrow = 2,
                   heights = c(2,1.2),
